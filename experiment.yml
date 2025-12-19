@@ -107,7 +107,55 @@ sites:
   #     networks:
   #       - sharednet1
 
+  # Example, provisions a virtual machine on FABRIC FIU.
+  # - kind: fabric
+  #   rc_file: secrets/fabric_rc
+  #   walltime: "02:00:00"
+  #   resources:
+  #     machines:
+  #       - labels:
+  #           - submit
+  #         site: FIU
+  #         image: default_rocky_8
+  #         flavour: big
+  #         number: 1
+  #         gpus:
+  #           - model: TeslaT4
+  #         storage:
+  #           - kind: NVME
+  #             model: P4510
+  #             mount_point: /mnt/nvme
+  #           - kind: Storage
+  #             model: NAS
+  #             name: kiso-fabric-integration
+  #             auto_mount: true
+  #     networks:
+  #       - labels:
+  #           - v4
+  #         kind: FABNetv4
+  #         site: FIU
+  #         nic:
+  #           kind: SharedNIC
+  #           model: ConnectX-6
+
 experiments:
+  - kind: shell
+    name: shell-experiment
+    description: An experiment to print a message
+    # Specify what scripts to run and on which node to run them on
+    scripts:
+      - labels:
+          - submit
+        script: |
+          #!/bin/bash
+          echo "Hello, world!" | tee hello.txt
+    # Optionally, specify output files and on which node to copy them from after the experiment
+    outputs:
+      - labels:
+          - submit
+        src: hello.txt
+        dst: output
+
   - kind: pegasus
     name: process-experiment
     # Number of time to run the experiment
