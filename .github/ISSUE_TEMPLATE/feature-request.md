@@ -1,6 +1,6 @@
 ---
 name: Feature request
-about: Suggest a new feature for Kiso process experiment
+about: Suggest a new feature in the Kiso experiment
 title: ''
 labels: ''
 assignees: ''

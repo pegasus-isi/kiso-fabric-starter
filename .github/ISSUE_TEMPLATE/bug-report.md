@@ -1,6 +1,6 @@
 ---
 name: Bug report
-about: Report a bug in Kiso process experiment
+about: Report a bug in the Kiso experiment
 title: ''
 labels: bug
 assignees: ''

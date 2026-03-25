@@ -53,134 +53,42 @@ software:
   #     environment:
   #       OLLAMA_MAX_QUEUE: 512
 
-
 # See: https://kiso.readthedocs.io/en/latest/concepts.html#sites
 sites:
-  # Example, provisions three virtual machines using Vagrant with VirtualBox on the local machine.
-  - kind: vagrant
-    backend: virtualbox
-    box: bento/rockylinux-9
-    user: vagrant
-    config_extra: 'config.vm.synced_folder ".", "/vagrant", disabled: true'
+  # Example, provisions a virtual machine on FABRIC FIU.
+  - kind: fabric
+    rc_file: secrets/fabric_rc
+    walltime: "02:00:00"
     resources:
       machines:
         - labels:
             - execute
-          backend: virtualbox
-          box: bento/rockylinux-9
-          user: vagrant
-          flavour: "large"
+          site: FIU
+          image: default_rocky_8
+          flavour: big
           number: 1
         - labels:
             - submit
-          backend: virtualbox
-          box: bento/rockylinux-9
-          user: vagrant
-          flavour: "large"
+          site: FIU
+          image: default_rocky_8
+          flavour: big
           number: 1
         - labels:
             - central-manager
-          backend: virtualbox
-          box: bento/rockylinux-9
-          user: vagrant
-          flavour: "large"
+          site: FIU
+          image: default_rocky_8
+          flavour: big
           number: 1
       networks:
         - labels:
-            - r1
-          cidr: "172.16.42.0/16"
-
-  # Example, provisions a container on Chameleon Edge with a Raspberry Pi 4.
-  # - kind: chameleon-edge
-  #   walltime: "04:00:00"
-  #   lease_name: edge-lease
-  #   rc_file: secrets/chi-edge-app-credopenrc.sh
-  #   resources:
-  #     machines:
-  #       - labels:
-  #           - central-manager
-  #         machine_name: raspberrypi4-64
-  #         count: 1
-  #         container:
-  #           name: execute
-  #           image: rockylinux:8
-
-  # Example, provisions a virtual machine on Chameleon TACC.
-  # - kind: chameleon
-  #   walltime: "04:00:00"
-  #   lease_name: tacc-lease
-  #   rc_file: secrets/chi-tacc-app-cred-openrc.sh
-  #   key_name: mayani-mac-mini
-  #   image: CC-Ubuntu18.04
-  #   resources:
-  #     machines:
-  #       - labels:
-  #           - submit
-  #         flavour: compute_zen3
-  #         number: 1
-  #         image: CC-Ubuntu22.04
-  #     networks:
-  #       - sharednet1
-
-  # Example, provisions a virtual machine on FABRIC FIU.
-  # - kind: fabric
-  #   rc_file: secrets/fabric_rc
-  #   walltime: "02:00:00"
-  #   resources:
-  #     machines:
-  #       - labels:
-  #           - submit
-  #         site: FIU
-  #         image: default_rocky_8
-  #         flavour: big
-  #         number: 1
-  #         gpus:
-  #           - model: TeslaT4
-  #         storage:
-  #           - kind: NVME
-  #             model: P4510
-  #             mount_point: /mnt/nvme
-  #           - kind: Storage
-  #             model: NAS
-  #             name: kiso-fabric-integration
-  #             auto_mount: true
-  #     networks:
-  #       - labels:
-  #           - v4
-  #         kind: FABNetv4
-  #         site: FIU
-  #         nic:
-  #           kind: SharedNIC
-  #           model: ConnectX-6
+            - v4
+          kind: FABNetv4
+          site: FIU
+          nic:
+            kind: SharedNIC
+            model: ConnectX-6
 
 experiments:
-  - kind: shell
-    name: shell-experiment
-    description: An experiment to print a message
-
-    # Optionally, specify input files and on which node to copy them on to setup the environment
-    # By default, the directory containing the experiment.yml file will be copied to all provisioned nodes
-    # inputs:
-    #   - labels:
-    #       - execute
-    #     src: README.md
-    #     dst: ~kiso/kiso-experiment-template
-
-    # Specify what scripts to run and on which node to run them on
-    scripts:
-      - labels:
-          - submit
-        script: |
-          #!/bin/bash
-          echo "Hello, world!" | tee hello.txt
-
-    # Optionally, specify output files and on which node to copy them from after the experiment
-    outputs:
-      - labels:
-          - submit
-        src: hello.txt
-        dst: output
-
   - kind: pegasus
     name: process-experiment
     # Number of time to run the experiment
