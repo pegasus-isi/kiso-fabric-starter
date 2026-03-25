@@ -4,9 +4,18 @@ The Kiso repository is a template that can be used to start a new Kiso experimen
 
 ## Prerequisites
 
-```sh
-pip install kiso[fabric]
-```
+1. A FABRIC account — sign up at [portal.fabric-testbed.net](https://portal.fabric-testbed.net)
+2. [An active FABRIC project allocation](https://learn.fabric-testbed.net/knowledge-base/creating-or-joining-a-project/) — create a new project or join an existing one
+3. [SSH keys generated and configured](https://learn.fabric-testbed.net/knowledge-base/generating-ssh-configuration-and-ssh-keys/) — required for Kiso to connect to provisioned nodes over SSH
+4. [A FABRIC API token generated](https://learn.fabric-testbed.net/knowledge-base/obtaining-and-using-fabric-api-tokens/) — required for the RC file
+5. A FABRIC RC file downloaded from the portal (used as `rc_file` in the config) — log in to the FABRIC portal, navigate to **Experiments → Manage Credentials**, and download the RC file
+6. [Permissions requested](https://learn.fabric-testbed.net/knowledge-base/fabric-user-roles-and-project-permissions/) for any resources your experiment requires (GPUs, public IPs, NVMe storage, etc.) — see the permissions table below
+7. Kiso installed: `pip install kiso[fabric]`
+8. **(macOS only, optional)** `rsync` from Homebrew: some FABRIC sites assign IPv6 addresses as the management IP, and macOS's built-in `rsync` fails to connect to IPv6 addresses via jump hosts. Install the Homebrew version to fix this:
+
+   ```bash
+   brew install rsync
+   ```
 
 ## Defining the experiment
 
