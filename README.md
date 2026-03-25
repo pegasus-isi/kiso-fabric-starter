@@ -8,7 +8,18 @@ The Kiso repository is a template that can be used to start a new Kiso experimen
 2. [An active FABRIC project allocation](https://learn.fabric-testbed.net/knowledge-base/creating-or-joining-a-project/) — create a new project or join an existing one
 3. [SSH keys generated and configured](https://learn.fabric-testbed.net/knowledge-base/generating-ssh-configuration-and-ssh-keys/) — required for Kiso to connect to provisioned nodes over SSH
 4. [A FABRIC API token generated](https://learn.fabric-testbed.net/knowledge-base/obtaining-and-using-fabric-api-tokens/) — required for the RC file
-5. A FABRIC RC file downloaded from the portal (used as `rc_file` in the config) — log in to the FABRIC portal, navigate to **Experiments → Manage Credentials**, and download the RC file
+5. A FABRIC RC file (used as `rc_file` in the config)
+   ```sh
+   export FABRIC_BASTION_HOST=bastion.fabric-testbed.net
+   export FABRIC_PROJECT_ID=<fabric-project-id>
+   export FABRIC_BASTION_USERNAME=<fabric-bastion-username>
+   export FABRIC_BASTION_KEY_LOCATION=<path-to-fabric-bastion-key>
+   export FABRIC_SLICE_PRIVATE_KEY_FILE=<path-to-fabric-sliver-key>
+   export FABRIC_SLICE_PUBLIC_KEY_FILE=<path-to-fabric-bastion-public-key>
+   export FABRIC_LOG_LEVEL=INFO
+   export FABRIC_LOG_FILE=/tmp/fablib/fablib.log
+   export FABRIC_TOKEN_LOCATION=<path-to-fabric-token>
+   ```
 6. [Permissions requested](https://learn.fabric-testbed.net/knowledge-base/fabric-user-roles-and-project-permissions/) for any resources your experiment requires (GPUs, public IPs, NVMe storage, etc.)
 7. Kiso installed: `pip install kiso[fabric]`
 8. **(macOS only, optional)** `rsync` from Homebrew: some FABRIC sites assign IPv6 addresses as the management IP, and macOS's built-in `rsync` fails to connect to IPv6 addresses via jump hosts. Install the Homebrew version to fix this:
