@@ -59,6 +59,7 @@ sites:
   - kind: fabric
     rc_file: secrets/fabric_rc
     walltime: "02:00:00"
+    name_prefix: fabric-starter-pegasus
     resources:
       machines:
         - labels:
