@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 import os
 import logging
+import platform
 from pathlib import Path
 from argparse import ArgumentParser
 
@@ -25,6 +26,8 @@ class ProcessWorkflow:
         self.dagfile = dagfile
         self.wf_name = "process"
         self.wf_dir = str(Path(__file__).parent.resolve())
+        machine = platform.machine()
+        self.arch = Arch("aarch64" if machine.lower() == "arm64" else machine.lower())
 
     # --- Write files in directory --------------------------------------------
     def write(self):
@@ -59,7 +62,7 @@ class ProcessWorkflow:
         )
 
         exec_site = (
-            Site(exec_site_name, arch=Arch.AARCH64)
+            Site(exec_site_name, arch=self.arch)
             .add_pegasus_profile(style="condor")
             .add_condor_profile(universe="vanilla")
             .add_profiles(Namespace.PEGASUS, key="data.configuration", value="condorio")
@@ -77,8 +80,8 @@ class ProcessWorkflow:
             site=exec_site_name,
             pfn="/bin/ls",
             is_stageable=False,
-            arch=Arch.AARCH64,
-        ).add_condor_profile(requirements='TARGET.Arch == "aarch64"')
+            arch=self.arch,
+        ).add_condor_profile(requirements=f'TARGET.Arch == "{self.arch.value}"')
 
         self.tc.add_transformations(ls)
 
